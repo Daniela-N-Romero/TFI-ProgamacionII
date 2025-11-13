@@ -16,17 +16,21 @@ public class Pedido extends Base{
     private java.time.LocalDate fecha;
     private String clienteNombre;
     private String total;
+    private Estado estado;
 
     //Constructor completo:
-    public Pedido(String numero, LocalDate fecha, String clienteNombre, String total, int id) {
-        super(id, false); // Llama al constructor de Base con eliminado=false
+    
+    public Pedido(String numero, LocalDate fecha, String clienteNombre, String total, Estado estado, int id) {
+        super(id, false);
         this.numero = numero;
         this.fecha = fecha;
         this.clienteNombre = clienteNombre;
         this.total = total;
+        this.estado = estado;
     }
-    
+
     //Constructor por defecto:
+    
     public Pedido() {
         super();
     }
@@ -64,6 +68,16 @@ public class Pedido extends Base{
     public void setTotal(String total) {
         this.total = total;
     }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+    
+    
 
     //Generamos el toString:
     @Override

@@ -16,14 +16,21 @@ public class Envio extends Base{
     private double costo;
     private java.time.LocalDate fechaDespacho;
     private java.time.LocalDate fechaEstimada;
+    private Empresa empresa;
+    private EstadoEnvio estado;
+    private TipoEnvio tipo;
     
     //Constructor completo:
-    public Envio(String tracking, double costo, LocalDate fechaDespacho, LocalDate fechaEstimada, int id) {
-        super(id, false); //Llama al constructor de Base con eliminado=false
+
+    public Envio(String tracking, double costo, LocalDate fechaDespacho, LocalDate fechaEstimada, Empresa empresa, EstadoEnvio estado, TipoEnvio tipo, int id) {
+        super(id, false);
         this.tracking = tracking;
         this.costo = costo;
         this.fechaDespacho = fechaDespacho;
         this.fechaEstimada = fechaEstimada;
+        this.empresa = empresa;
+        this.estado = estado;
+        this.tipo = tipo;
     }
     
     //Constructor por defecto:
