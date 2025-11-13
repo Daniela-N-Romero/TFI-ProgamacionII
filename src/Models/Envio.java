@@ -71,6 +71,20 @@ public class Envio extends Base{
     public void setFechaEstimada(LocalDate fechaEstimada) {
         this.fechaEstimada = fechaEstimada;
     }
+
+    @Override
+    public String toString() {
+        return "Envio{" + " ID=" + getId() +
+                "tracking=" + tracking + 
+                ", costo=" + costo + 
+                ", fechaDespacho=" + fechaDespacho + 
+                ", fechaEstimada=" + fechaEstimada + 
+                ", empresa=" + empresa + 
+                ", estado=" + estado + 
+                ", tipo=" + tipo +
+                ", eliminado=" + isEliminado() + '}';
+    }
+    
     
     
            

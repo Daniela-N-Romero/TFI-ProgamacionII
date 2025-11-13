@@ -80,10 +80,18 @@ public class Pedido extends Base{
     
 
     //Generamos el toString:
+
     @Override
     public String toString() {
-        return "Pedido{" + "numero=" + numero + ", fecha=" + fecha + ", clienteNombre=" + clienteNombre + ", total=" + total + '}';
+        return "Pedido{" + "ID=" + getId() + 
+                "numero=" + numero + 
+                ", fecha=" + fecha + 
+                ", clienteNombre=" + clienteNombre + 
+                ", total=" + total + 
+                ", estado=" + estado + 
+                ", eliminado=" + isEliminado() + '}';
     }
+   
     
     
     
