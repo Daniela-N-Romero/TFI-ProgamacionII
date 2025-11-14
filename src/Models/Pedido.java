@@ -4,10 +4,93 @@
  */
 package Models;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Daniela Nahir Romero
  */
-public class Pedido {
+public class Pedido extends Base{
+    //Definimos los atributos:
+    private String numero;
+    private java.time.LocalDate fecha;
+    private String clienteNombre;
+    private double total;
+    private Estado estado;
+
+    //Constructor completo:
+    
+    public Pedido(String numero, LocalDate fecha, String clienteNombre, double total, Estado estado, int id) {
+        super(id, false);
+        this.numero = numero;
+        this.fecha = fecha;
+        this.clienteNombre = clienteNombre;
+        this.total = total;
+        this.estado = estado;
+    }
+
+    //Constructor por defecto:
+    
+    public Pedido() {
+        super();
+    }
+    
+    //Getters y Setters
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getClienteNombre() {
+        return clienteNombre;
+    }
+
+    public void setClienteNombre(String clienteNombre) {
+        this.clienteNombre = clienteNombre;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+    
+    
+
+    //Generamos el toString:
+
+    @Override
+    public String toString() {
+        return "Pedido{" + "ID=" + getId() + 
+                "numero=" + numero + 
+                ", fecha=" + fecha + 
+                ", clienteNombre=" + clienteNombre + 
+                ", total=" + total + 
+                ", estado=" + estado + 
+                ", eliminado=" + isEliminado() + '}';
+    }
+   
     
 }
