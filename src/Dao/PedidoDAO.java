@@ -29,8 +29,7 @@ public class PedidoDAO implements GenericDAO<Pedido> {
     private static final String UPDATE_SQL = "UPDATE pedidos SET numero_pedido = ?, fecha = ?, cliente_nombre = ?, total = ?, estado = ? WHERE id = ?";
     private static final String DELETE_SQL = "UPDATE pedidos SET eliminado = 1 WHERE id = ?"; // Soft Delete
     
-    private static final String SELECT_BASE = "SELECT p.*, " +
-            "e.id AS e_id, e.tracking, e.costo, e.fechaDespacho, e.fechaEstimada, e.empresa, e.estado AS e_estado, e.tipo " + 
+    private static final String SELECT_BASE = "SELECT p.*, " + "e.* " + 
             "FROM pedidos p LEFT JOIN envios e ON p.id = e.id_pedido " +
             "WHERE p.eliminado = 0";
 
@@ -72,12 +71,12 @@ public class PedidoDAO implements GenericDAO<Pedido> {
     
 
     @Override
-    public void eliminar(int id) throws Exception {
+    public void eliminar(long id) throws Exception {
         // Implementación de Soft Delete
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(DELETE_SQL)) {
 
-            stmt.setInt(1, id);
+            stmt.setLong(1, id);
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected == 0) {
@@ -85,13 +84,14 @@ public class PedidoDAO implements GenericDAO<Pedido> {
             }
         }
     }
+    
 
     @Override
-    public Pedido getById(int id) throws Exception {
+    public Pedido getById(long id) throws Exception {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_BY_ID_SQL)) {
 
-            stmt.setInt(1, id);
+            stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -135,8 +135,21 @@ public class PedidoDAO implements GenericDAO<Pedido> {
         stmt.setString(index++, pedido.getClienteNombre());
         stmt.setDouble(index++, pedido.getTotal());
         stmt.setString(index++, pedido.getEstado().name()); // Enum a String
+        
+        // Manejo de FK envio_id
+        setEnvioId(stmt, index++, pedido.getEnvio());
+        // Manejo de FK cliente_id (Placeholder)
+        stmt.setNull(index++, java.sql.Types.INTEGER); 
 
         return index;
+    }
+    
+    private void setEnvioId(PreparedStatement stmt, int parameterIndex, Envio envio) throws SQLException {
+        if (envio != null && envio.getId() > 0) {
+            stmt.setLong(parameterIndex, envio.getId());
+        } else {
+            stmt.setNull(parameterIndex, java.sql.Types.INTEGER); 
+        }
     }
     
     
@@ -153,25 +166,25 @@ public class PedidoDAO implements GenericDAO<Pedido> {
     }
     
     private Pedido mapResultSetToPedido(ResultSet rs) throws SQLException {
-    Pedido pedido = new Pedido();
-    // Mapeo de atributos de Base (asumo que Base tiene setId y isEliminado)
-    pedido.setId(rs.getLong("id"));
-    //  Mapeo de atributos de Pedido
-    pedido.setNumero(rs.getString("numero_pedido"));
-    // Conversión de java.sql.Date a java.time.LocalDate
-    java.sql.Date sqlDate = rs.getDate("fecha");
-    if (sqlDate != null) {
-        pedido.setFecha(sqlDate.toLocalDate());
-    }
-    pedido.setClienteNombre(rs.getString("cliente_nombre"));
-    // Se lee como double y se convierte a String.
-    pedido.setTotal(rs.getDouble("total"));
-    // Conversión de String (de la DB) a Enum (Models.Estado)
-    String estadoString = rs.getString("estado");
-    if (estadoString != null) {
-        pedido.setEstado(Estado.valueOf(estadoString));
-    }
-    // 2. Mapeo de Envío (Eager Loading)
+        Pedido pedido = new Pedido();
+        // Mapeo de atributos de Base (asumo que Base tiene setId y isEliminado)
+        pedido.setId(rs.getLong("id"));
+        //  Mapeo de atributos de Pedido
+        pedido.setNumero(rs.getString("numero_pedido"));
+        // Conversión de java.sql.Date a java.time.LocalDate
+        java.sql.Date sqlDate = rs.getDate("fecha");
+        if (sqlDate != null) {
+            pedido.setFecha(sqlDate.toLocalDate());
+        }
+        pedido.setClienteNombre(rs.getString("cliente_nombre"));
+        // Se lee como double y se convierte a String.
+        pedido.setTotal(rs.getDouble("total"));
+        // Conversión de String (de la DB) a Enum (Models.Estado)
+        String estadoString = rs.getString("estado");
+        if (estadoString != null) {
+            pedido.setEstado(Estado.valueOf(estadoString));
+        }
+        // 2. Mapeo de Envío (Eager Loading)
         long envioId = rs.getLong("e_id"); // e_id viene del SELECT_BASE
         // rs.wasNull() comprueba si el valor leído (e_id) era NULL en la BD
         if (!rs.wasNull()) { 
@@ -200,5 +213,34 @@ public class PedidoDAO implements GenericDAO<Pedido> {
         }
     return pedido;
 }
+
+    @Override
+    public void insertarTx(Pedido entidad, Connection conn) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void actualizarTx(Pedido entidad, Connection conn) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void eliminarTx(long id, Connection conn) throws Exception {
+          if (conn == null) throw new IllegalArgumentException("La conexión no puede ser null.");
+
+        try (PreparedStatement stmt = conn.prepareStatement(DELETE_SQL)) {
+            stmt.setLong(1, id);
+                int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("No se encontró pedido con ID: " + id);
+            }
+        }
+    }
+
+    @Override
+    public Pedido getByIdTx(long id, Connection conn) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

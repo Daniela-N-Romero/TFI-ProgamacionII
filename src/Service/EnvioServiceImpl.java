@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Service;
+import Config.TransactionManager;
 import Dao.EnvioDAO;
 import Dao.GenericDAO;
 import Models.Envio;
-
 import java.util.List;
 
 
@@ -18,15 +18,20 @@ import java.util.List;
  */
 public class EnvioServiceImpl implements GenericService<Envio> {
     
-    private final GenericDAO<Envio> envioDAO;
-    
+    private final EnvioDAO envioDAO;
+    private final TransactionManager txManager; 
     
     //constructor
-    public EnvioServiceImpl(GenericDAO<Envio> envioDAO) {
+    public EnvioServiceImpl(EnvioDAO envioDAO, TransactionManager txManager) {
         if(envioDAO == null) {
             throw new IllegalArgumentException ("EnvioDAO no puede ser null");
         }
+        if (txManager == null){
+            throw new IllegalArgumentException("TransactionManager no puede ser null");
+        }
+        
         this.envioDAO = envioDAO;
+        this.txManager = txManager;
     }
     
     //Inserta un nuevo envio en la base de datos.
@@ -50,7 +55,7 @@ public class EnvioServiceImpl implements GenericService<Envio> {
     
     //Elimina lógicamente un envio
     
-    public void eliminar(int id) throws Exception {
+    public void eliminar(long id) throws Exception {
         if (id <= 0) {
             throw new IllegalArgumentException("El ID debe ser mayor a 0");
         }
@@ -97,5 +102,10 @@ public class EnvioServiceImpl implements GenericService<Envio> {
         }
            
     }   
+
+    @Override
+    public Envio getByID(long id) throws Exception {
+        return envioDAO.getById(id);
+    }
     
 }

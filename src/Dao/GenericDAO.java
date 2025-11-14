@@ -5,6 +5,7 @@
 package Dao;
 
 import java.util.List;
+import java.sql.*;
 
 /**
  *
@@ -16,11 +17,20 @@ public interface GenericDAO<T> {
     
     void actualizar(T entidad) throws Exception;
     
-    void eliminar(int id) throws Exception;
+    void eliminar(long id) throws Exception;
     
-    T getById(int id) throws Exception;
+    T getById(long id) throws Exception;
     
     List<T> getAll() throws Exception;
     
+        // --- MÉTODOS CRUD TRANSACCIONALES (Requieren Connection externa) ---
+    // Usados por la capa Service para agrupar múltiples operaciones
+    void insertarTx(T entidad, Connection conn) throws Exception;
+
+    void actualizarTx(T entidad, Connection conn) throws Exception;
+
+    void eliminarTx(long id, Connection conn) throws Exception;
+
+    T getByIdTx(long id, Connection conn) throws Exception;
     
 }

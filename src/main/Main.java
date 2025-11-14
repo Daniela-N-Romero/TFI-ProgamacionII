@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package main;
+import java.sql.SQLException;
 
 /**
  *
@@ -10,4 +11,10 @@ package main;
  */
 
 public class Main {
+    
+    public static void main(String[] args) {
+        AppMenu app = new AppMenu();
+        app.run();
+    }
+
 }

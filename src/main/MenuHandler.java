@@ -6,13 +6,12 @@ package main;
 
 import Models.Pedido;
 import Models.Estado;
-import Service.PedidoServiceImpl;
 import Models.Envio;
 import Models.TipoEnvio;
 import Models.Empresa;
 import Models.EstadoEnvio;
+import Service.EnvioServiceImpl;
 import java.time.LocalDate; // << NECESITAS IMPORTAR LocalDate
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import Service.PedidoServiceImpl; // Asumo que esta es tu implementación
 import java.util.List;
@@ -25,17 +24,22 @@ public class MenuHandler {
     
     private final Scanner scanner;
     private final PedidoServiceImpl pedidoService;
+    private final EnvioServiceImpl envioService;
     
     //Constructor con inyección de dependencias, valida que las dependencias no sean null.
-    public MenuHandler(Scanner scanner, PedidoServiceImpl pedidoService) {
+    public MenuHandler(Scanner scanner, PedidoServiceImpl pedidoService,EnvioServiceImpl envioService){
         if(scanner == null) {
             throw new IllegalArgumentException("Scanner no puede ser null");
         }
         if(pedidoService == null) {
             throw new IllegalArgumentException("PedidoService no puede ser null");
         }
+        if(envioService == null) {
+            throw new IllegalArgumentException("EnvioService no puede ser null");
+        }
         this.scanner = scanner;
         this.pedidoService = pedidoService;
+        this.envioService = envioService;
     }
     
     
@@ -57,7 +61,7 @@ public class MenuHandler {
             LocalDate fechaPedido = LocalDate.now(); //Generamos la fecha como "hoy"
             
             //Llamamos al constructor de Pedido
-            Pedido pedido = new Pedido(numero, fechaPedido, numero, total, estado, envio, 0L);
+            Pedido pedido = new Pedido(numero, fechaPedido, nombreCliente, total, estado, envio, 0L);
             //Insertamos el pedido
             pedidoService.insertar(pedido);
             //Mostramos el mensaje de exito por pantalla
@@ -96,8 +100,8 @@ public class MenuHandler {
     public void actualizarPedidos() {
         try {
             System.out.print("ID del pedido a actualizar: ");
-            long id = Long.parseLong(scanner.nextLine().trim());
-            Pedido p = pedidoService.getByID((long)id);
+            int id = Integer.parseInt(scanner.nextLine().trim());
+            Pedido p = pedidoService.getByID(id);
             
             if(p == null) {
                 System.out.println("Pedido no encontrado.");
@@ -149,10 +153,10 @@ public class MenuHandler {
         2. Invoca pedidoService.eliminar() que:
             - Marca pedido.eliminado = TRUE
         */
-        public void eliminarPedido() {
+        public void eliminarPedido(){
             try {
                 System.out.print("ID del pedido a eliminar: ");
-                long id = Long.parseLong(scanner.nextLine());
+                long id = Long.parseLong(scanner.nextLine().trim());
                 pedidoService.eliminar(id);
                 System.out.println("Pedido eliminado exitosamente.");
             } catch(NumberFormatException e) {

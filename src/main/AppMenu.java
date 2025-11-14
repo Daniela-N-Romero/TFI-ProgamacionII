@@ -4,17 +4,81 @@
  */
 package main;
 
+import Config.DatabaseConnection;
+import Config.TransactionManager;
+import Dao.EnvioDAO;
+import Dao.PedidoDAO;
+import Service.EnvioServiceImpl;
+import Service.PedidoServiceImpl;
+import java.sql.Connection;
+import java.util.Scanner;
+import java.sql.SQLException;
+
 /**
  *
  * @author Daniela Nahir Romero
  */
 public class AppMenu {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    private final MenuHandler menuHandler;
+    private boolean running;
+    private final Scanner scanner;
+    private PedidoServiceImpl pedidoService;
+    private EnvioServiceImpl envioService;
+
+    public AppMenu(){
+        try {
+            initializeServices();
+        } catch (SQLException ex) {
+            System.out.println("Error al iniciar los servicios"+ ex.getMessage());;
+        }
+        this.scanner = new Scanner(System.in);
+        this.menuHandler = new MenuHandler(this.scanner, this.pedidoService, this.envioService);
+        this.running = true;
     }
+
+ 
+    public void run() {
+        while (running) {
+            try {
+                MenuDisplay.mostrarMenuPrincipal();
+                int opcion = Integer.parseInt(scanner.nextLine());
+                processOption(opcion);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada invalida. Por favor, ingrese un numero.");
+            }
+        }
+        scanner.close();
+    }
+
+    private void processOption(int opcion) {
+        switch (opcion) {
+            case 1 -> menuHandler.crearPedido();
+            case 2 -> menuHandler.listarPedidos();
+            case 3 -> menuHandler.actualizarPedidos();
+            case 4 -> menuHandler.eliminarPedido();
+            case 0 -> {
+                System.out.println("Saliendo...");
+                running = false;
+            }
+            default -> System.out.println("Opcion no valida.");
+        }
+    }
+
+    private void initializeServices() throws SQLException {
+        // 1. Capa DAO
+        EnvioDAO envioDAO = new EnvioDAO();
+        PedidoDAO pedidoDAO = new PedidoDAO();
+
+        // 2. Capa Config/Transacciones
+        Connection conn = DatabaseConnection.getConnection();
+        TransactionManager txManager = new TransactionManager(conn);
+
+        // 3. Capa Service y asignación a campos 
+        this.envioService = new EnvioServiceImpl(envioDAO, txManager); 
+        this.pedidoService = new PedidoServiceImpl(pedidoDAO, envioDAO, txManager); 
+    }
+    
+    
     
 }
