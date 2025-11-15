@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 public class Pedido extends Base{
     //Definimos los atributos:
-    private String numero;
+    private String numeroPedido;
     private java.time.LocalDate fecha;
     private String clienteNombre;
     private double total;
@@ -23,7 +23,7 @@ public class Pedido extends Base{
 
     public Pedido(String numero, LocalDate fecha, String clienteNombre, double total, Estado estado, Envio envio, Long id) {
         super(id, false);
-        this.numero = numero;
+        this.numeroPedido = numero;
         this.fecha = fecha;
         this.clienteNombre = clienteNombre;
         this.total = total;
@@ -41,11 +41,11 @@ public class Pedido extends Base{
     //Getters y Setters
 
     public String getNumero() {
-        return numero;
+        return numeroPedido;
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        this.numeroPedido = numero;
     }
 
     public LocalDate getFecha() {
@@ -95,7 +95,7 @@ public class Pedido extends Base{
     @Override
     public String toString() {
         return "Pedido{" + "ID=" + getId() + 
-                "numero=" + numero + 
+                "numero=" + numeroPedido + 
                 ", fecha=" + fecha + 
                 ", clienteNombre=" + clienteNombre + 
                 ", total=" + total + 
