@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface GenericService<T> {
     //interfaz generica que define las operaciones basicas que deben implementar todos los servicios
-    void insertar (T entidades) throws Exception;
-    void actualizar (T entidades) throws Exception;
-    void eliminar (int id)throws Exception;
+    void insertar (T entidad) throws Exception;
+    void actualizar (T entidad) throws Exception;
+    void eliminar (int id_dom)throws Exception;
     T getByID (int id) throws Exception;
     List<T> getAll() throws Exception;
          
