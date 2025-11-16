@@ -103,7 +103,7 @@ public class MenuHandler {
         try {
             System.out.print("ID del pedido a actualizar: ");
             long id = Long.parseLong(scanner.nextLine().trim());
-            Pedido p = pedidoService.getByID((long)id);
+            Pedido p = pedidoService.getById(id);
             
             if(p == null) {
                 System.out.println("Pedido no encontrado.");
@@ -170,7 +170,7 @@ public class MenuHandler {
             try {
                 System.out.print("Ingrese el ID del pedido a buscar: ");
                 long id = Long.parseLong(scanner.nextLine().trim());
-                Pedido pedido = pedidoService.getByID(id);
+                Pedido pedido = pedidoService.getById(id);
                 if(pedido == null) {
                     System.out.println("Pedido con id " + id + " no encontrado.");  
                     return;

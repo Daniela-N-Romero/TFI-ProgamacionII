@@ -14,7 +14,7 @@ public interface GenericService<T> {
     void insertar (T entidad) throws Exception;
     void actualizar (T entidad) throws Exception;
     void eliminar (long id_dom)throws Exception;
-    T getByID (long id) throws Exception;
+    T getById (long id) throws Exception;
     List<T> getAll() throws Exception;
          
 }
