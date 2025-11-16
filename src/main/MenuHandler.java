@@ -220,7 +220,7 @@ public class MenuHandler {
                 System.out.println("Fecha del despacho (mañana): " + fechaDespacho);
                 //Para la fecha estimada le ponemos por defecto 5 días despues de "hoy"
                 LocalDate fechaEstimada = LocalDate.now().plusDays(5);
-                System.out.println("\"Fecha del despacho (mañana): " + fechaEstimada);
+                System.out.println("Fecha del despacho (mañana): " + fechaEstimada);
             
                 //Creamos el objeto Envio con su Constructor completo.
                 Envio envio = new Envio(tracking, costo, fechaDespacho, fechaEstimada, empresa, estado, tipo, 0L);

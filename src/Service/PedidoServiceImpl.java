@@ -52,7 +52,7 @@ public class PedidoServiceImpl implements GenericService<Pedido> {
     }
         
     
-    public void eliminar(int id) throws Exception {
+    public void eliminar(long id) throws Exception {
         if (id <= 0) {
             throw new IllegalArgumentException("El ID debe ser mayor a 0");
         }
@@ -60,7 +60,7 @@ public class PedidoServiceImpl implements GenericService<Pedido> {
     }
         //Obtiene una pedidp por su ID.
         
-    public Pedido getById(int id) throws Exception {
+    public Pedido getById(long id) throws Exception {
         if (id <= 0) {
             throw new IllegalArgumentException("El ID debe ser mayor a 0");
         }
