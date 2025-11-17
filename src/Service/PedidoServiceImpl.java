@@ -16,6 +16,7 @@ import java.util.List;
  * @author Daniela Nahir Romero
  */
 
+
 //Implementación del servicio de negocio para la entidad Pedido
 //Capa intermedia entre la UI y el DAO que aplica validaciones de negocio complejas.
 public class PedidoServiceImpl implements GenericService<Pedido> {
@@ -74,12 +75,13 @@ public class PedidoServiceImpl implements GenericService<Pedido> {
         }
     }
 
-    @Override
+     @Override
     public void actualizar(Pedido entidades) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    @Override
+        
+    
+   @Override
     public void eliminar(long id) {
         try (txManager) {
             Connection conn = txManager.getConnection();
@@ -97,29 +99,30 @@ public class PedidoServiceImpl implements GenericService<Pedido> {
             txManager.close(); 
         }
     }
-    
-    
-
-
+        
     @Override
-    public Pedido getByID(long id) throws Exception {
+    public Pedido getById(long id) throws Exception {
         if(id <= 0) {
             throw new IllegalArgumentException("El ID debe ser mayor a 0");
             
         }
         return pedidoDAO.getById(id);
     }
-
+    
+    
+    // Obtiene todas los pedidps activos (eliminado=FALSE).
+ 
     @Override
     public List getAll() throws Exception {
         return pedidoDAO.getAll();
     }
     
-     // Método auxiliar de validación
+        
+      
+    // Valida que una pedido tenga datos correctos.
     private void validatePedido(Pedido pedido) {
-        // Implementa aquí las validaciones de negocio
         if (pedido == null) {
-            throw new IllegalArgumentException("El pedido no puede ser nulo.");
+            throw new IllegalArgumentException("El pedido no puede ser null");
         }
         if (pedido.getNumero() == null || pedido.getNumero().trim().isEmpty()) {
             throw new IllegalArgumentException("El número de pedido es obligatorio.");
@@ -127,8 +130,30 @@ public class PedidoServiceImpl implements GenericService<Pedido> {
         if (pedido.getClienteNombre() == null || pedido.getClienteNombre().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del cliente es obligatorio.");
         }
-        if (pedido.getTotal() < 0) {
-            throw new IllegalArgumentException("El total del pedido no puede ser negativo.");
+        if (pedido.getTotal() <= 0) {
+            throw new IllegalArgumentException("El total del pedido debe ser un valor positivo");
         }
+        if (pedido.getEstado() == null) {
+            throw new IllegalArgumentException("El estado del pedido es obligatorio.");
+        }
+        if (pedido.getEnvio() == null) {
+            throw new IllegalArgumentException("El Pedido debe tener un Envío asociado para la inserción.");
+        }
+        
     }
+    //Valida que el 'numero' del pedido sea único en el sistema
+    //PedidoDAO tiene un método para buscar por 'numero'
+    private void validatePedidoUnique(String numero, long pedidoId) throws Exception {
+//        Pedido existente = 
+//        if (existente != null) {
+//            if (pedidoId == null || !pedidoId.equals(Long.valueOf(existente.getId()))) {
+//                throw new IllegalArgumentException("Ya existe un pedido con el número: " + numero);
+//                
+//            }
+//            
+//        }
+ }
 }
+    
+    
+

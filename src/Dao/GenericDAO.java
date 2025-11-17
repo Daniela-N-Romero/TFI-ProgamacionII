@@ -4,12 +4,14 @@
  */
 package Dao;
 
+import java.sql.Connection;
 import java.util.List;
 import java.sql.*;
 
 /**
  *
  * @author Daniela Nahir Romero
+ * @param <T>
  */
 public interface GenericDAO<T> {
     
