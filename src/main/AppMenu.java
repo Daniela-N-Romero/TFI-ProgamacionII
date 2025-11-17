@@ -32,7 +32,7 @@ public class AppMenu {
         try {
             initializeServices();
         } catch (SQLException ex) {
-            System.out.println("Error al iniciar los servicios"+ ex.getMessage());;
+            System.out.println("Error al iniciar los servicios"+ ex.getMessage());
         }
         this.scanner = new Scanner(System.in);
         this.menuHandler = new MenuHandler(this.scanner, this.pedidoService, this.envioService, this.uniquesGenerator);
@@ -58,34 +58,6 @@ public class AppMenu {
         switch (opcion) {
             case 1 -> menuHandler.gestionarPedidos();
             case 2 -> menuHandler.gestionarEnvios();
-            case 0 -> {
-                System.out.println("Saliendo...");
-                running = false;
-            }
-            default -> System.out.println("Opcion no valida.");
-        }
-    }
-
-    private void processPedidosOption(int opcion) {
-        switch (opcion) {
-            case 1 -> menuHandler.crearPedido();
-            case 2 -> menuHandler.listarPedidos();
-            case 3 -> menuHandler.actualizarPedidos();
-            case 4 -> menuHandler.eliminarPedido();
-            case 0 -> {
-                System.out.println("Saliendo...");
-                running = false;
-            }
-            default -> System.out.println("Opcion no valida.");
-        }
-    }
-    
-        private void processEnviosOption(int opcion) {
-        switch (opcion) {
-            case 1 -> menuHandler.crearPedido();
-            case 2 -> menuHandler.listarPedidos();
-            case 3 -> menuHandler.actualizarPedidos();
-            case 4 -> menuHandler.eliminarPedido();
             case 0 -> {
                 System.out.println("Saliendo...");
                 running = false;

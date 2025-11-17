@@ -29,6 +29,7 @@ public class MenuHandler {
     private final PedidoServiceImpl pedidoService;
     private final EnvioServiceImpl envioService;
     private final uniquesGenerator uniquesGenerator;
+    
     //Constructor con inyección de dependencias, valida que las dependencias no sean null.
     public MenuHandler(Scanner scanner, PedidoServiceImpl pedidoService, EnvioServiceImpl envioService,uniquesGenerator uniquesGenerator) {
         if(scanner == null) {
@@ -79,11 +80,10 @@ public class MenuHandler {
             System.out.println("El pedido se generará para retiro en local (sin Envío).");
         }
         
-        // 1. Instanciar Pedido (usando constructor sin ID o pasando 0L, pero dejando que el DAO lo sobrescriba)
-        // Usamos el constructor que tú definiste:
+        // Instanciar Pedido (usando constructor sin ID o pasando 0L, pero dejando que el DAO lo sobrescriba)
         Pedido pedido = new Pedido(numeroPedido, fechaPedido, nombreCliente, totalDecimal, estado, envio, 0L);
 
-        // 2. Llamar ÚNICAMENTE al servicio de Pedidos.
+        // Llamar ÚNICAMENTE al servicio de Pedidos.
         // El Service se encarga de la lógica transaccional (Pedido + Envío).
         pedidoService.insertar(pedido);
         
@@ -191,7 +191,7 @@ public class MenuHandler {
             }
         }
         
-        public void buscarPedidoPorId () {
+        public void buscarPedidoPorId() {
             try {
                 System.out.print("Ingrese el ID del pedido a buscar: ");
                 long id = Long.parseLong(scanner.nextLine().trim());

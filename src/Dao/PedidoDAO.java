@@ -184,7 +184,7 @@ public class PedidoDAO implements GenericDAO<Pedido> {
             if (estadoString != null) {
                 pedido.setEstado(Estado.valueOf(estadoString));
             }
-            // 2. Mapeo de Envío (Eager Loading)
+            // Mapeo de Envío 
             long envioId = rs.getLong("e.id"); // e_id viene del SELECT_BASE
             // rs.wasNull() comprueba si el valor leído (e_id) era NULL en la BD
             if (!rs.wasNull()) { 
@@ -231,7 +231,7 @@ public class PedidoDAO implements GenericDAO<Pedido> {
             setGeneratedId(stmt, pedido);
         }    
     }
-
+    
     @Override
     public void actualizarTx(Pedido pedido, Connection conn) throws Exception {
             if (conn == null) {
