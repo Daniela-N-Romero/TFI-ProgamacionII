@@ -49,30 +49,35 @@ public class PedidoServiceImpl implements GenericService<Pedido> {
     
     
    @Override
-    public void insertar(Pedido pedido) throws Exception {
+public void insertar(Pedido pedido) throws Exception {
+    validatePedido(pedido);
+    try (txManager) {
+        Connection conn = txManager.getConnection();
+        txManager.startTransaction();
+        
+        // Insertar Pedido y obtener su ID generado.
+        pedidoDAO.insertarTx(pedido, conn);
 
-        validatePedido(pedido);
-
-        try (txManager) { 
-            Connection conn = txManager.getConnection(); 
-            txManager.startTransaction(); 
-            pedidoDAO.insertarTx(pedido, conn); 
-
-            if (pedido.getEnvio() != null) {
-                Envio envio = pedido.getEnvio();
-                envio.setIdPedido(pedido.getId());
-                envioDAO.insertarTx(envio, conn); 
-                pedido.setEnvio(envio); 
-            }
-            txManager.commit();
-            System.out.println("Pedido insertado correctamente.");
+        if (pedido.getEnvio() != null) {
+            Envio envio = pedido.getEnvio();
             
-        } catch (Exception e) {
-            txManager.rollback(); 
-            throw new Exception("Error transaccional al insertar el pedido: " + e.getMessage(), e); 
-
+            // Asignación de la Clave Foránea (FK).
+            envio.setIdPedido(pedido.getId());
+            
+            // Insertar Envío usando el ID del Pedido.
+            envioDAO.insertarTx(envio, conn);
+            
+            // Opcional: actualizar el objeto Pedido con el Envío que ya tiene ID de Envío (si aplica).
+            pedido.setEnvio(envio);
         }
+        txManager.commit();
+        System.out.println("Pedido insertado correctamente.");
+        
+    } catch (Exception e) {
+        txManager.rollback();
+        throw new Exception("Error transaccional al insertar el pedido: " + e.getMessage(), e);
     }
+}
 
      @Override
     public void actualizar(Pedido entidades) throws Exception {

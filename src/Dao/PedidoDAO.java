@@ -219,7 +219,7 @@ public class PedidoDAO implements GenericDAO<Pedido> {
          if (conn == null) {
              throw new IllegalArgumentException("La conexión no puede ser null.");
          }
-       try (PreparedStatement stmt = conn.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
+       try (PreparedStatement stmt = conn.prepareStatement(INSERT_SQL, new String[] {"id"})) {
 
             setPedidoParameters(stmt, pedido, 1);
             int filasAfectadas = stmt.executeUpdate();

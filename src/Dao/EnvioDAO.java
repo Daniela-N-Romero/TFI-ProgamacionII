@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class EnvioDAO implements GenericDAO<Envio> {
 
     private static final String INSERT_SQL = "INSERT INTO envios (tracking, empresa, tipo, costo, fechaDespacho, fechaEstimada, estado, id_pedido) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_SQL = "UPDATE envios SET tracking = ?, empresa = ?, tipo = ?, costo = ?, fechaDespacho = ?, fechaEstimada = ?, estado = ? WHERE id = ?";
+    private static final String UPDATE_SQL = "UPDATE envios SET tracking = ?, empresa = ?, tipo = ?, costo = ?, fechaDespacho = ?, fechaEstimada = ?, estado = ?, id_pedido = ? WHERE id = ?";
     private static final String SOFT_DELETE_SQL = "UPDATE envios SET eliminado = 1 WHERE id = ?"; 
     private static final String GET_BY_ID_SQL = "SELECT * FROM envios WHERE id = ? AND eliminado = 0";
     private static final String GET_ALL_SQL = "SELECT * FROM envios WHERE eliminado = 0";
@@ -83,7 +83,7 @@ public class EnvioDAO implements GenericDAO<Envio> {
             
             stmt.setString(7, entidad.getEstado().name());
             stmt.setLong(8, entidad.getIdPedido()); 
-            
+            stmt.setLong(9, entidad.getId());   
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
                 throw new SQLException("No se encontró el Envío con ID: " + entidad.getId() + " para actualizar.");
@@ -147,6 +147,9 @@ public class EnvioDAO implements GenericDAO<Envio> {
     
     /**
      * Inserta un nuevo envío, usando la conexión proporcionada (transaccional).
+     * @param envio
+     * @param conn
+     * @throws java.lang.Exception
      */
     @Override
     public void insertarTx(Envio envio, Connection conn) throws Exception {
@@ -213,6 +216,9 @@ public class EnvioDAO implements GenericDAO<Envio> {
 
     /**
      * Elimina (Soft Delete) el Envío usando la FK id_pedido.
+     * @param id_pedido
+     * @param conn
+     * @throws java.lang.Exception
      */
     @Override
     public void eliminarTx(long id_pedido, Connection conn) throws Exception {

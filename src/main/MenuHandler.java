@@ -48,52 +48,53 @@ public class MenuHandler {
     
     
     public void crearPedido() {
-        boolean envioSolicitado = false;
-        
         try { 
-            String numeroPedido = uniquesGenerator.generarNumeroPedido();
-            System.out.print("Nombre del cliente: ");
-            String nombreCliente = scanner.nextLine().trim();
-            System.out.print("Total: ");
-            double total = Double.parseDouble(scanner.nextLine().trim());
-            BigDecimal totalDecimal = BigDecimal.valueOf(total);
-            Estado estado = Estado.NUEVO;
-            //Implementamos el método para crear un Envío
-            Envio envio = null;
-            System.out.print("¿Desea agregar un nuevo envio? (s/n): ");
-            String opcionEnvio = scanner.nextLine().trim();
-            
-            envioSolicitado = opcionEnvio.equalsIgnoreCase("s");
+        String numeroPedido = uniquesGenerator.generarNumeroPedido();
+        
+        System.out.print("Nombre del cliente: ");
+        String nombreCliente = scanner.nextLine().trim();
+        
+        System.out.print("Total: ");
+        double total = Double.parseDouble(scanner.nextLine().trim());
+        BigDecimal totalDecimal = BigDecimal.valueOf(total);
+        
+        Estado estado = Estado.NUEVO;
+        LocalDate fechaPedido = LocalDate.now();
+        
+        Envio envio = null;
+        
+        System.out.print("¿Desea agregar un nuevo envio? (s/n): ");
+        boolean envioSolicitado = scanner.nextLine().trim().equalsIgnoreCase("s");
 
-            if (envioSolicitado) {
-                // Si el usuario dijo 's', intentar crear el Envío.
-                envio = crearEnvio();
-                
-                // VALIDACIÓN: Si el usuario pidió Envío y falló la captura, ABORTAR.
-                if (envio == null) { 
-                    System.out.println("\n-------------------------------------------------------------");
-                    System.out.println("Creación de Pedido CANCELADA. El envío es obligatorio y falló la captura de datos.");
-                    System.out.println("-------------------------------------------------------------");
-                    return; // Aborta el método sin llamar al servicio
-                }
-            } else {
-                // Si dijo 'n', el envío se mantiene como null (retiro en local).
-                System.out.println("El pedido se generará para retiro en local (sin Envío).");
-            }
-            LocalDate fechaPedido = LocalDate.now(); //Generamos la fecha como "hoy"
+        if (envioSolicitado) {
+            envio = crearEnvio(); // Método auxiliar que captura datos
             
-            //Llamamos al constructor de Pedido
-            Pedido pedido = new Pedido(numeroPedido, fechaPedido, nombreCliente, totalDecimal, estado, envio, 0L);
-            //Insertamos el pedido
-            pedidoService.insertar(pedido);
-            //Mostramos el mensaje de exito por pantalla
-            System.out.println("Pedido creado exitosamente con ID: " + pedido.getId());
-        } catch (NumberFormatException e) {
-            System.err.println("Error: El campo 'total' debe ser un número válido");
-        } catch (Exception e) {
-            System.err.println("Error al crear el pedido " + e.getMessage());
+            if (envio == null) {
+                System.out.println("\n-------------------------------------------------------------");
+                System.out.println("Creación de Pedido CANCELADA. Falló la captura de datos del Envío.");
+                System.out.println("-------------------------------------------------------------");
+                return;
+            }
+        } else {
+            System.out.println("El pedido se generará para retiro en local (sin Envío).");
         }
+        
+        // 1. Instanciar Pedido (usando constructor sin ID o pasando 0L, pero dejando que el DAO lo sobrescriba)
+        // Usamos el constructor que tú definiste:
+        Pedido pedido = new Pedido(numeroPedido, fechaPedido, nombreCliente, totalDecimal, estado, envio, 0L);
+
+        // 2. Llamar ÚNICAMENTE al servicio de Pedidos.
+        // El Service se encarga de la lógica transaccional (Pedido + Envío).
+        pedidoService.insertar(pedido);
+        
+        System.out.println("✅ Pedido creado exitosamente con ID: " + pedido.getId());
+        
+    } catch (NumberFormatException e) {
+        System.err.println("❌ Error: El campo 'total' debe ser un número válido.");
+    } catch (Exception e) {
+        System.err.println("❌ Error al crear el pedido: " + e.getMessage());
     }
+}
     
     public void listarPedidos() {
         try {
@@ -230,7 +231,6 @@ public class MenuHandler {
                 System.out.print("Costo del envio: ");
                 String costoStr = scanner.nextLine().trim();
                 BigDecimal costo = new BigDecimal(costoStr);
-                System.out.print("Empresa de envio (ANDREANI, OCA, CORREO_ARG)");
                 Empresa empresa = seleccionarEmpresaEnvio();
                 TipoEnvio tipo = seleccionarTipoEnvio();
                 //Para el estado del envio, siempre comenzará por EN_PREPARACION

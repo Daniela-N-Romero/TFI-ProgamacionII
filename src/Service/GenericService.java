@@ -17,5 +17,6 @@ public interface GenericService<T> {
     void eliminar (long id_dom)throws Exception;
     T getById (long id) throws Exception;
     List<T> getAll() throws Exception;
+    
          
 }
