@@ -75,14 +75,19 @@ CREATE TABLE envios (
     eliminado BOOLEAN DEFAULT 0,
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id)
 );
-Configurar Credenciales: Verifica y edita las constantes en el archivo Config/DatabaseConnection.java si tus credenciales de MariaDB son diferentes a las predeterminadas (root, sin contraseña):
+Configurar Credenciales: Verifica y edita las constantes en el archivo Config/DatabaseConnection.java 
+si tus credenciales de MariaDB son diferentes a las predeterminadas (root, sin contraseña):
 
 Java
 
 private static final String URL = "jdbc:mariadb://localhost:3306/tfi_db";
+
 private static final String USER = "root"; 
+
 private static final String PASSWORD = ""; 
+
 Dependencias de Java
+
 Asegúrate de que el conector JDBC de MariaDB esté incluido en las librerías de tu proyecto para establecer la comunicación con la base de datos.
 
 EJECUCIÓN DEL PROYECTO
