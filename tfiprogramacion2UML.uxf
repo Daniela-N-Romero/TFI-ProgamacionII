@@ -1,0 +1,242 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>456</x><y>384</y><w>168</w><h>232</h></coordinates><panel_attributes>Pedido
+--
+- numero: String
+- fecha: LocalDate
+- clienteNombre: String 
+- total: String
+--
++ getNumero(): String
++ setNumero(): void
++ getFecha(): LocalDate
++ setFecha(): void
++ getClienteNombre: String
++ setClienteNombre: void
++ getTotal: String
++ setTotal: void
++ getEstado(): Estado
++ setEstado(): void
++ setEnvio(): void
++ getEnvio(): Envio
++ toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>456</x><y>40</y><w>168</w><h>256</h></coordinates><panel_attributes>Envío
+--
+- tracking: String
+- costo: double
+- fechaDespacho: LocalDate
+- fechaEstimada: LocalDate
+--
++ getTracking(): String
++ setTracking(): void
++ getCosto(): double
++ setCosto(): void
++ getfechaDespacho(): LocalDate
++ setfechaDespacho(): void
++ getfechaEstimada(): LocalDate
++ setfechaEstimada(): void
++ setEmpresa(): void
++ getEmpresa(): Empresa
++ setEstado(): void
++ getEstado(): Estado
++ setTipo(): void
++ getTipo(): Tipo
++ toString(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>288</y><w>56</w><h>112</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1
+- envio</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>904</x><y>448</y><w>104</w><h>80</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+Estado
+--
+_+ NUEVO_
+_+ FACTURADO_
+_+ ENVIADO_</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>464</y><w>304</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- estado</panel_attributes><additional_attributes>360;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>264</y><w>112</w><h>80</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+Empresa
+--
+_+ ANDREANI_
+_ +OCA_
+_ +CORREO_ARG_</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>64</y><w>104</w><h>80</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+TipoEnvio
+--
+_+ ESTANDAR_
+_+ EXPRESS_
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>272</y><w>296</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1= 1
+- empresa</panel_attributes><additional_attributes>350;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>80</y><w>296</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1= 1
+- tipo</panel_attributes><additional_attributes>350;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>896</x><y>168</y><w>104</w><h>80</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
+EstadoEnvio
+--
+_+ EN_PREPARACION_
+_+ EN_TRANSITO_
+_+ ENTREGADO_</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>616</x><y>192</y><w>296</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1= 1
+- estado</panel_attributes><additional_attributes>350;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>128</x><y>144</y><w>184</w><h>104</h></coordinates><panel_attributes>/Base/
+--
+- id: Long
+- eliminado: boolean
+--
++ getId(): int
++ setId(): void
++ isEliminado: boolean
++ setEliminado: boolean
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>216</y><w>168</w><h>240</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;190;280</additional_attributes></element><element><id>Relation</id><coordinates><x>304</x><y>136</y><w>168</w><h>64</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;190;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>72</x><y>2184</y><w>168</w><h>152</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+/GenericDAO&lt;T&gt;/
+--
+/+ insertar(T): void/
+/+ actualizar(T): void/
+/+ eliminar(long): void/
+/+ getById(long): T/
+/+ getAll(): List /
+/+ insertarTx(T, Connection): void/
+/+ actualizarx(T, Connection): void/
+/+ eliminarTx(long, Connection): void/
+/+ getByIdTx(long, Connection): void/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>728</x><y>2120</y><w>240</w><h>200</h></coordinates><panel_attributes>EnvioDAO
+--
+- DELETE_BY_PEDIDO_SQL: String
+- INSERT_SQL: String
+- UPDATE_SQL: String
+- SOFT_DELETE_SQL: String
+- GET_BY_ID_SQL: String
+- GET_ALL_SQL: String
+- SOFT_DELETE_BY_PEDIDO_SQL: String 
+- VERIFICAR_TRACKING: String
+- RESTORE_ELIMINADO: String
+- SELECT_ELIMINADOS: String
+--
+- mapResultSetToEnvio(ResultSet): Envio
++ isTrackingUnique(String): boolean
++ getEliminados(): List&lt;Envio&gt;
++ restaurarEliminadoTx(long, Connection): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>232</x><y>2208</y><w>512</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;620;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>344</x><y>2280</y><w>280</w><h>152</h></coordinates><panel_attributes>PedidoDAO
+--
+- INSERT_SQL: String
+- UPDATE_SQL: String
+- DELETE_SQL: String
+- SELECT_BASE: String
+- SELECT_BY_ID_SQL: String
+- SELECT_ALL_SQL: String
+--
+- setPedidoParameters(PreparedStatement, Pedido, int): int
+- setEnvioId(PreparedStatement, int, Envio): void
+- setGeneratedId(PreparedStatement, Pedido): void
+- mapResultSetToPedido(ResultSet): Pedido
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>232</x><y>2280</y><w>128</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;140;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>120</x><y>752</y><w>168</w><h>112</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+/GenericService&lt;T&gt;/
+--
+/+ insertar(T): void/
+/+ actualizar(T): void/
+/+ eliminar(long): void/
+/+ getById(long): T/
+/+ getAll(): List /
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>648</x><y>736</y><w>320</w><h>112</h></coordinates><panel_attributes>PedidoServiceImpl
+--
+- pedidoDAO: PedidoDAO
+- envioDAO: EnvioDAO
+- txManager: TransactionManager 
+--
++ PedidoServiceImpl(PedidoDAO, EnvioDAO, TransactionManager)
++ validatePedido(Pedido): void
+- validarId(long): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>768</y><w>384</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;460;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>496</x><y>880</y><w>320</w><h>96</h></coordinates><panel_attributes>EnvioServiceImpl
+--
+- envioDAO: EnvioDAO
+- txManager: TransactionManager 
+--
++ EnvioServiceImpl(EnvioDAO, TransactionManager)
+- validateEnvio(Envio): void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>832</y><w>232</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;270;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>424</x><y>1112</y><w>280</w><h>88</h></coordinates><panel_attributes>DatabaseConnection
+--
+- URL: String
+- USER: String
+- PASSWORD: String
+--
++ getConnection(): Connection
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>96</x><y>1240</y><w>168</w><h>64</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+/AutoCloseable/
+--
+--
++ close(): void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>424</x><y>1256</y><w>280</w><h>136</h></coordinates><panel_attributes>TransactionManager
+--
+- conn: Connection
+- transactionActive: boolean
+--
++ TransactionManager(Connection): TransactionManager
++ getConnection(): Connection
++ startTransaction(): void
++ commit(): void
++ rollback(): void
++ isTransactionActive(): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>256</x><y>1272</y><w>184</w><h>24</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;210;10</additional_attributes></element><element><id>Relation</id><coordinates><x>16</x><y>0</y><w>1032</w><h>40</h></coordinates><panel_attributes>lt=-
+
+Capa Models</panel_attributes><additional_attributes>10;20;1270;20</additional_attributes></element><element><id>Relation</id><coordinates><x>8</x><y>2088</y><w>1040</w><h>40</h></coordinates><panel_attributes>lt=-
+
+Capa DAO</panel_attributes><additional_attributes>10;20;1280;20</additional_attributes></element><element><id>Relation</id><coordinates><x>16</x><y>672</y><w>1032</w><h>40</h></coordinates><panel_attributes>lt=-
+
+Capa Service</panel_attributes><additional_attributes>10;20;1270;20</additional_attributes></element><element><id>Relation</id><coordinates><x>16</x><y>1048</y><w>1040</w><h>40</h></coordinates><panel_attributes>lt=-
+
+Capa Config</panel_attributes><additional_attributes>10;20;1280;20</additional_attributes></element><element><id>Relation</id><coordinates><x>16</x><y>1424</y><w>1040</w><h>40</h></coordinates><panel_attributes>lt=-
+
+Capa Main</panel_attributes><additional_attributes>10;20;1280;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>336</x><y>1480</y><w>384</w><h>160</h></coordinates><panel_attributes>AppMenu
+--
+- MenuHandler menuHandler;
+- running:boolean 
+- scanner; Scanner
+- PedidoServiceImpl pedidoService;
+- EnvioServiceImpl envioService;
+- uniquesGenerator uniquesGenerator;
+--
++ AppMenu()
++ run(): void
++ processMainOption(int): void
++ initializeServices(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>712</x><y>840</y><w>232</w><h>704</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- pedidoService</panel_attributes><additional_attributes>190;10;190;860;10;860</additional_attributes></element><element><id>UMLClass</id><coordinates><x>336</x><y>1664</y><w>384</w><h>232</h></coordinates><panel_attributes>MenuHandler
+--
+- scanner: Scanner
+- uniquesGenerator: uniquesGenerator
+--
++ MenuHandler(Scanner, PedidoServiceImpl, EnvioServiceImpl, uniquesGenerator)
++ crearPedido(): void
++ listarPedidos(): void
++ actualizarPedidos(): void
++ eliminarPedido(): void
++ buscarPedidoPorId(): void
++ crearEnvio(): Envio
++ listarEnvios(): void
++ seleccionarEmpresaEnvio(): Empresa
++ seleccionarTipoEnvio(): TipoEnvio
++ buscarEnvioPorId(): void
++ actualizarEnvio(): void
++ eliminarEnvio(): void
++ gestionarPedidos(): void
++ gestionarEnvios(): void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>712</x><y>840</y><w>288</w><h>944</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- pedidoService</panel_attributes><additional_attributes>260;10;260;1160;10;1160</additional_attributes></element><element><id>Relation</id><coordinates><x>712</x><y>968</y><w>152</w><h>744</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- envioService</panel_attributes><additional_attributes>90;10;90;910;10;910</additional_attributes></element><element><id>UMLClass</id><coordinates><x>336</x><y>1936</y><w>384</w><h>88</h></coordinates><panel_attributes>MenuDisplay
+--
+- scanner: Scanner
+- uniquesGenerator: uniquesGenerator
+--
++ mostrarMenuPrincipal(): void
++ mostrarMenuPedidos(): void
++ mostrarMenuEnvios(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>32</x><y>1488</y><w>168</w><h>48</h></coordinates><panel_attributes>Main
+--
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>192</x><y>1496</y><w>160</w><h>32</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;use&gt;&gt;</panel_attributes><additional_attributes>180;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>392</x><y>2576</y><w>288</w><h>136</h></coordinates><panel_attributes>uniquesGenerator
+--
+- random: Random
+- TRACKING_LENGTH: int
+- MAX_ATTEMPTS: int 
+--
++ uniquesGenerator(PedidoDAO, EnvioDAO)
++ generarNumeroPedido(): String
++ generarTrackingCode(): String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>2464</y><w>1040</w><h>40</h></coordinates><panel_attributes>lt=-
+
+Utils</panel_attributes><additional_attributes>10;20;1280;20</additional_attributes></element><element><id>Relation</id><coordinates><x>664</x><y>2312</y><w>232</w><h>344</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- envioDAO</panel_attributes><additional_attributes>210;10;210;410;10;410</additional_attributes></element><element><id>Relation</id><coordinates><x>564</x><y>2424</y><w>80</w><h>168</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+- pedidoDAO</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element></diagram>
