@@ -75,6 +75,7 @@ CREATE TABLE envios (
     eliminado BOOLEAN DEFAULT 0,
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id)
 );
+
 Configurar Credenciales: Verifica y edita las constantes en el archivo Config/DatabaseConnection.java 
 si tus credenciales de MariaDB son diferentes a las predeterminadas (root, sin contraseña):
 
