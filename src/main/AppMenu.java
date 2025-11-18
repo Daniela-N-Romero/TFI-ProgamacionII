@@ -4,6 +4,7 @@
  */
 package main;
 
+import Config.DBInitializer;
 import Dao.EnvioDAO;
 import Dao.PedidoDAO;
 import Service.EnvioServiceImpl;
@@ -25,13 +26,21 @@ public class AppMenu {
     private uniquesGenerator uniquesGenerator;
 
     public AppMenu(){
-        initializeServices();
+        try{ 
+            DBInitializer.initialize();
+            initializeServices();
+
+        }catch (Exception ex) { 
+                // Capturamos Exception (más genérico) para cubrir errores del inicializador
+                System.err.println("Error al iniciar la aplicación (BBDD o Servicios): "+ ex.getMessage());
+                // Si la inicialización falla, la aplicación no puede seguir.
+                System.exit(1);
+        }
         this.scanner = new Scanner(System.in);
         this.menuHandler = new MenuHandler(this.scanner, this.pedidoService, this.envioService, this.uniquesGenerator);
         this.running = true;
-                
-    }
 
+    }
  
     public void run() {
         while (running) {
