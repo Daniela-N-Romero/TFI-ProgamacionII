@@ -92,3 +92,6 @@ CREATE TABLE envios (
 * **Esteban (Backend & DAL Architect):** Arquitectura UML, implementación de la capa DAO, consultas SQL complejas y desarrollo de la interfaz de menús.
 * **Agustín (Service Layer & Model Developer):** Lógica de negocio (Services), modelos y Enums, gestión transaccional (`TransactionManager`) y utilidades de generación de códigos.
   
+## LINK A VIDEO 
+
+https://www.youtube.com/watch?v=4yoGCChbBxg 
