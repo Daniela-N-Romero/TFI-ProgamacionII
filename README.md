@@ -1,54 +1,56 @@
-GESTIÓN DE PEDIDOS Y ENVÍOS - Trabajo Final Integrador - Programación II
-DESCRIPCIÓN DEL PROYECTO
+# GESTIÓN DE PEDIDOS Y ENVÍOS - Trabajo Final Integrador - Programación II
 
-Este proyecto es un sistema de gestión de pedidos y envíos desarrollado en Java (JDBC) que implementa una arquitectura de cinco capas (Configuración, Modelos, DAO, Servicio y Main/UI) 
-para garantizar la separación de responsabilidades, la encapsulación de la lógica de negocio y la gestión robusta de transacciones.
-El sistema permite la administración completa del ciclo de vida de los pedidos, desde su creación hasta la gestión de su envío asociado. 
-Utiliza el patrón Soft Delete para la eliminación lógica de entidades.
+## DESCRIPCIÓN DEL PROYECTO
 
-ARQUITECTURA Y TECNOLOGÍAS
-El proyecto sigue el principio de Separación de Responsabilidades con una estructura por capas bien definida:
+Este proyecto es un sistema de gestión de pedidos y envíos desarrollado en **Java (JDBC)** que implementa una arquitectura de **cinco capas** para garantizar la separación de responsabilidades, la encapsulación de la lógica de negocio y la gestión robusta de transacciones.
 
-Capas
-Models: Contiene las clases de datos (Pedido, Envio, Base) y los catálogos (Enums: Estado, Empresa, TipoEnvio).
+El sistema permite la administración completa del ciclo de vida de los pedidos y sus envíos asociados. Incluye:
+* Patrón **Soft Delete** para la eliminación lógica de entidades.
+* Sistema de **"Arranque Cero"** (`DBInitializer`) que crea la base de datos y carga datos iniciales automáticamente al ejecutarse por primera vez.
 
-Config: Gestiona la conexión a la base de datos (DatabaseConnection) y el manejo transaccional (TransactionManager).
+## ARQUITECTURA Y TECNOLOGÍAS
 
-DAO (Data Access Object): Responsable de la comunicación directa con la base de datos (CRUD y Soft Delete) utilizando JDBC.
+El proyecto sigue el principio de Separación de Responsabilidades con la siguiente estructura por capas:
 
-Service: Implementa la lógica de negocio, validaciones y gestiona las transacciones complejas que abarcan múltiples DAOs.
+### Capas del Sistema
+1.  **Presentación (UI):** Punto de entrada (`Main`), lógica del menú interactivo.
+2.  **Servicio (Lógica de Negocio):** Implementa reglas de negocio, validaciones y gestiona **transacciones complejas** que involucran múltiples DAOs.
+3.  **DAO (Data Access Object):** Comunicación directa con la base de datos (CRUD y Soft Delete) utilizando JDBC.
+4.  **Infraestructura (Config):** Gestión de conexión, transacciones y la inicialización automática (`DBInitializer`).
+5.  **Base de Datos / Modelos:** Servidor MariaDB, Clases de Datos (`Pedido`, `Envio`) y Catálogos (`Enums`).
 
-Main / UI: Contiene el punto de entrada (Main), la lógica del menú interactivo (MenuHandler), y la inyección de dependencias (AppMenu).
+### Tecnologías
+* **Lenguaje:** Java (JDK 21 LTS o superior).
+* **Base de Datos:** MariaDB Server.
+* **Conexión:** JDBC Nativo.
+* **Arquitectura:** 5 Capas, Soft Delete.
 
-Tecnologías
-Lenguaje: Java (JDK 8 o superior)
+## REQUISITOS E INSTALACIÓN 
 
-Base de Datos: MariaDB
+### Requisitos Previos
+* **Java Development Kit (JDK):** Versión 21 o superior.
+* **MariaDB Server:** Una instancia local en ejecución (puerto 3306 por defecto).
+* **IDE:** NetBeans, IntelliJ IDEA o Eclipse.
 
-Conexión: JDBC
+### Configuración del Driver JDBC (Importante)
+El proyecto incluye el driver JDBC de MariaDB necesario en la estructura del código:
 
-Arquitectura: 5 Capas, Soft Delete
+> **Inclusión del Driver:** El archivo `mariadb-java-client-X.X.X.jar` se encuentra en la carpeta **`/lib`** del proyecto. Esto asegura que no haya conflictos con rutas locales y que no necesites descargar el driver por separado. Verifica que tu IDE lo haya añadido correctamente a las librerías de compilación.
 
-REQUISITOS E INSTALACIÓN
-Requisitos Previos
-Asegúrate de tener instalado lo siguiente:
+### Inicialización de la Base de Datos
 
-Java Development Kit (JDK) 8 o superior.
+El sistema maneja la creación de la base de datos de forma automática.
 
-MariaDB o MySQL Server (o acceso a una instancia de base de datos).
-
-IDE: NetBeans, IntelliJ IDEA o Eclipse.
-
-Configuración de la Base de Datos
-El proyecto está configurado para conectarse a una base de datos local llamada tfi_db.
-
-Crear la Base de Datos:
-
-SQL
-
-CREATE DATABASE tfi_db;
-USE tfi_db;
-Crear las Tablas: Utiliza la siguiente estructura para las tablas pedidos y envios:
+1.  Asegúrate de que el servidor MariaDB esté corriendo en `localhost:3306`.
+2.  Verifica las credenciales en `src/Config/DatabaseConnection.java`:
+3.  
+    ```java
+    private static final String USER = "root";
+    private static final String PASSWORD = ""; // Ajustar si tu root tiene contraseña
+    ```
+    
+4.  La aplicación, al ejecutarse, creará la base de datos `tfi_db`, sus tablas y cargará los datos iniciales de ejemplo si es la primera vez.
+5.  Crear las Tablas: Utiliza la siguiente estructura para las tablas pedidos y envios:
 
 SQL
 
@@ -76,26 +78,17 @@ CREATE TABLE envios (
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id)
 );
 
-Configurar Credenciales: Verifica y edita las constantes en el archivo Config/DatabaseConnection.java 
-si tus credenciales de MariaDB son diferentes a las predeterminadas (root, sin contraseña):
+## EJECUCIÓN DEL PROYECTO 
 
-Java
+1.  **Abrir:** Abre el proyecto en tu IDE (NetBeans/IntelliJ).
+2.  **Ejecutar:** Haz clic derecho en la clase principal (`main.Main`) o usa la opción "Run" del proyecto.
+3.  **Consola:** La aplicación iniciará, mostrará los logs de inicialización de la BBDD, y presentará el menú principal interactivo.
 
-private static final String URL = "jdbc:mariadb://localhost:3306/tfi_db";
+---
 
-private static final String USER = "root"; 
+## ROLES Y CONTRIBUCIONES
 
-private static final String PASSWORD = ""; 
-
-Dependencias de Java
-
-Asegúrate de que el conector JDBC de MariaDB esté incluido en las librerías de tu proyecto para establecer la comunicación con la base de datos.
-
-EJECUCIÓN DEL PROYECTO
-Abre el proyecto en tu IDE (NetBeans/IntelliJ).
-
-Verifica que el conector JDBC esté añadido.
-
-Ejecuta la clase main.Main.
-
-La aplicación iniciará en la consola y mostrará el menú principal para comenzar la gestión.
+* **Daniela (DevOps & Data Engineer):** Gestión de versiones (Git), infraestructura de conexión (`Config`), diseño de BBDD y depuración crítica.
+* **Esteban (Backend & DAL Architect):** Arquitectura UML, implementación de la capa DAO, consultas SQL complejas y desarrollo de la interfaz de menús.
+* **Agustín (Service Layer & Model Developer):** Lógica de negocio (Services), modelos y Enums, gestión transaccional (`TransactionManager`) y utilidades de generación de códigos.
+  
