@@ -25,7 +25,7 @@ El proyecto sigue el principio de Separación de Responsabilidades con la siguie
 * **Conexión:** JDBC Nativo.
 * **Arquitectura:** 5 Capas, Soft Delete.
 
-## REQUISITOS E INSTALACIÓN 🛠️
+## REQUISITOS E INSTALACIÓN 
 
 ### Requisitos Previos
 * **Java Development Kit (JDK):** Versión 21 o superior.
